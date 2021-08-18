@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paintings</title>
+</head>
+<body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+        <h1>Welcome {{first_name}} {{last_name}}!</h1>
+        <div style="width: 15%; display: flex; justify-content: space-between;">
+            <p><a href="/paintings/create">Add Painting</a></p>
+            <p><a href="/user/logout">Logout</a></p>
+        </div>
+    </header>
+    {% with messages = get_flashed_messages(category_filter=['message']) %}     <!-- declare a variable called messages -->
+        {% if messages %}                            <!-- check if there are any messages -->
+            {% for message in messages %}            <!-- loop through the messages -->
+                <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <p>Paintings:</p>
+    <!-- Need list here -->
+    <ul>
+        {% for painting in paintings %}
+        <li><a href="/paintings/{{painting.id}}">{{painting.title}}</a> by {{painting.user.first_name}} {{painting.user.last_name}} {% if painting.user.id == session['user_id'] %}<a href='/paintings/{{painting.id}}/delete'>Delete</a> | <a href='/paintings/{{painting.id}}/edit'>Edit</a>{% endif %}</li>
+        {% endfor %}
+    </ul><br>
+    <p>My Paintings:</p>
+    <!-- Need list here -->
+    <ul>
+        {% for painting in my_paintings %}
+        <li><a href="/paintings/{{painting.id}}">{{painting.title}}</a> by {{painting.user.first_name}} {{painting.user.last_name}}</li>
+        {% endfor %}
+    </ul>
+    <a href="/user/logout">Logout</a>
+</body>
+</html>

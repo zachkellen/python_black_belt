@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Painting</title>
+</head>
+<body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+        <h1>{{painting.title}}!</h1>
+        <div style="width: 25%; display: flex; justify-content: space-between;">
+            <p><a href="/paintings/create">Add Painting</a></p>
+            <p><a href="/paintings">Dashboard</a></p>
+            <p><a href="/user/logout">Logout</a></p>
+        </div>
+    </header>
+    <div>
+        <p>Painted by: {{painting.user.first_name}} {{painting.user.last_name}}</p>
+        <p>Descripiton: {{painting.description}}</p>
+        <p>Price: ${{painting.price}}</p>
+        <p>Quantity: {{painting.quantity}}</p>
+        <p>Number Purchased: {{purchases}}</p><br><br>
+        {% if painting.quantity > purchases and painting.user_id != session['user_id'] %}
+        <form action='/paintings/{{painting.id}}/purchase' method="POST">
+            <button type="submit">Buy</button>
+        </form>
+        {% endif %}
+        {% if painting.quantity <= purchases and painting.user_id != session['user_id'] %}
+        <p>Sold Out</p>
+        {% endif %}
+    </div>
+</body>
+</html>
